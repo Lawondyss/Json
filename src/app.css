@@ -1,0 +1,104 @@
+:root {
+    --dark-1: #000000;
+    --dark-2: #16191d;
+    --light: #adb5bd;
+    --symbols: #868e96;
+    --key: #e64980;
+    --string: #40c057;
+    --number: #228be6;
+    --boolean: #f59f00;
+    --null: #9a9178;
+    --info: #1864ab66;
+    --danger:#fa525266;
+    --text: var(--light);
+    --radius: 8px;
+    --radius-small: calc(var(--radius) / 2);
+    --gap: 16px;
+    --gap-small: calc(var(--gap) / 4);
+    --font-sans: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif;
+    --font-mono: Dank Mono, Operator Mono, Inconsolata, Fira Mono, ui-monospace, SF Mono, Monaco, Droid Sans Mono, Source Code Pro, monospace;
+
+    font-family: var(--font-sans);
+    font-weight: 400;
+
+    color: var(--text);
+    background-color: var(--dark-1);
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    padding: var(--gap);
+    height: 100vh;
+    display: flex;
+}
+
+input, textarea {
+    color: var(--text);
+    line-height: 1.5;
+    background-color: transparent;
+    border: none;
+    outline: none;
+}
+
+button {
+    color: var(--dark-2);
+    background-color: var(--light);
+    border: 1px solid var(--dark-2);
+    border-radius: var(--radius-small);
+    cursor: pointer;
+    padding: var(--gap-small) var(--gap);
+}
+
+code, .code {
+    font-family: var(--font-mono);
+    font-size: 1.2rem;
+    letter-spacing: 0;
+}
+
+[popover] {
+    flex-direction: column;
+    gap: var(--gap);
+    margin: auto;
+    padding: var(--gap);
+    color: var(--dark-1);
+    background-color: rgb(from var(--light) r g b / .6);
+    border-radius: var(--radius);
+    border: 1px solid rgb(from var(--light) r g b / .8);
+    box-shadow: 0 0 16px 0 rgb(from var(--light) r g b / .6);
+    backdrop-filter: blur(4.5px);
+    opacity: 0; /* Final state of the exit animation */
+    transition: opacity .25s;
+}
+
+[popover]:popover-open {
+    display: flex;
+    opacity: 1;
+}
+
+/* Needs to be after the previous [popover]:popover-open rule to take effect, as the specificity is the same */
+@starting-style {
+    [popover]:popover-open {
+        opacity: 0;
+    }
+}
+
+#app {
+    flex: 1;
+    display: flex;
+    gap: var(--gap-small);
+    height: 100%;
+}
+
+.flexible {
+    flex: 1;
+}
