@@ -3,7 +3,7 @@
 
     let inputElm: HTMLTextAreaElement|null = null
     let indentMultiplier = $state<number>(4)
-    //let input = $state<string>('[{"id":123,"name":"Alice Smith","isActive":false,"profile":{"age":28,"email":"alice.smith@example.com","phoneNumbers":["555-1234","555-5678"],"address":{"street":"789 Maple St","city":"Home\\"town","state":"CA","zip":"90210"},"preferences":{"newsletter":true,"notifications":{"email":true,"sms":false},"categories":["health","fashion","science","art","history","gaming","finance","education"]}},"roles":["user"],"metadata":{"createdAt":"2022-04-12T07:20:50Z","updatedAt":"2023-03-11T10:05:30Z","lastLogin":"2024-06-22T14:45:00Z","loginHistory":[{"date":"2024-06-22T14:45:00Z","ip":"192.168.1.1"},{"date":"2024-06-21T18:25:00Z","ip":"192.168.1.2"}]},"settings":{"theme":"dark","language":"en-US","privacy":{"profileVisibility":"friends","searchEngineIndexing":false}},"preferences":{"favoriteColors":["blue","green"],"interests":[{"name":"technology","level":"high"},{"name":"sports","level":"medium"}]},"tasks":[{"title":"Finish report","dueDate":"2024-06-25T09:00:00Z","completed":false},{"title":"Call Bob","dueDate":"2024-06-23T15:00:00Z","completed":true},{"title":"Review code","dueDate":null,"completed":null}],"notifications":[{"type":"email","message":"You have a new message from Bob","receivedAt":"2024-06-22T11:20:00Z"},{"type":"sms","message":"Your package has been delivered","receivedAt":"2024-06-21T09:10:00Z"},{"type":"push","message":"Meeting starts in 10 minutes","receivedAt":null}],"stats":{"posts":42,"followers":128,"following":300,"lastPostId":null},"monthlyExpenses":[["January",2000],["February",1800],["March",2200],["April",2100],["May",2300],["June",1900],["July",2400],["August",2000],["September",2100],["October",2200],["November",2300],["December",2500]]},{"id":123,"name":"John Smith","isActive":true,"profile":{"age":28,"email":"john.smith@example.com","phoneNumbers":["555-1234","555-5678"],"address":{"street":"789 Maple St","city":"Hometown","state":"CA","zip":"90210"},"preferences":{"newsletter":true,"notifications":{"email":true,"sms":false},"categories":["technology","sports","music","movies","books","travel","food"]}},"roles":["user","editor"],"metadata":{"createdAt":"2022-04-12T07:20:50Z","updatedAt":"2023-03-11T10:05:30Z","lastLogin":"2024-06-22T14:45:00Z","loginHistory":[{"date":"2024-06-22T14:45:00Z","ip":"192.168.1.1"},{"date":"2024-06-21T18:25:00Z","ip":"192.168.1.2"}]},"settings":{"theme":"dark","language":"en-US","privacy":{"profileVisibility":"friends","searchEngineIndexing":false}},"preferences":{"favoriteColors":["blue","green"],"interests":[{"name":"technology","level":"high"},{"name":"sports","level":"medium"}]},"tasks":[{"title":"Finish report","dueDate":"2024-06-25T09:00:00Z","completed":false},{"title":"Call Bob","dueDate":"2024-06-23T15:00:00Z","completed":true},{"title":"Review code","dueDate":null,"completed":null}],"notifications":[{"type":"email","message":"You have a new message from Bob","receivedAt":"2024-06-22T11:20:00Z"},{"type":"sms","message":"Your package has been delivered","receivedAt":"2024-06-21T09:10:00Z"},{"type":"push","message":"Meeting starts in 10 minutes","receivedAt":null}],"stats":{"posts":42,"followers":128,"following":300,"lastPostId":null},"monthlyExpenses":[["January",2000],["February",1800],["March",2200],["April",2100],["May",2300],["June",1900],["July",2400],["August",2000],["September",2100],["October",2200],["November",2300],["December",2500]]}]')
+    let trim = $state<boolean>(true)
     let input = $state<string>('')
     let {
         output, error, position
@@ -93,7 +93,7 @@
 {#snippet space(size)}{#each new Array(size * indentMultiplier) as i}&nbsp;{/each}{/snippet}
 
 {#snippet tString(value)}
-    <span class="string">"{value.replace('"', '\\"')}"</span>
+    <span class="string" class:trim>"{value.replace('"', '\\"')}"</span>
 {/snippet}
 
 {#snippet tNumber(value)}
@@ -109,7 +109,7 @@
 {/snippet}
 
 {#snippet tArray(value: Array<any>, indent: number)}
-    <span class="array" class:scalar={is.scalar(value[0])}>&lbrack;<span class="toggle">▼</span>
+    <span class="array">&lbrack;<span class="toggle"></span>
         {#each value as item, idx}
             {#if is.array(item)}<br>{@render space(indent + 1)}{/if}
             {@render typed(item, indent + 1)}{#if !is.last(value, idx)}<span class="comma">, </span>{/if}
@@ -119,12 +119,10 @@
 {/snippet}
 
 {#snippet tObject(value: object, indent: number = 0)}
-    <span class="object" class:close={false}>&lbrace;<span class="toggle">▼</span><br>
+    <span class="object" class:close={false}>&lbrace;<span class="toggle"></span><br>
         {#each Object.entries(value) as [k, v]}
             <span class="property">
-                <span class="key">{@render space(indent + 1)}{k}</span>:
-                {@render typed(v, indent + 1)}{#if !is.last(value, k)},{/if}
-                <br>
+                <span class="key">{@render space(indent + 1)}{k}</span>:&nbsp;{@render typed(v, indent + 1)}{#if !is.last(value, k)},{/if}<br>
             </span>
         {/each}<span>{@render space(indent)}</span>&rbrace;
     </span>
@@ -253,6 +251,7 @@
             background-color: var(--dark-2);
             min-width: 0;
             width: 100%;
+            container-type: inline-size;
 
             .msg {
                 display: block;
@@ -278,6 +277,10 @@
     .toggle {
         padding: var(--gap-small);
         cursor: pointer;
+
+        &:after {
+            content: '▼';
+        }
     }
 
     .close {
@@ -299,9 +302,11 @@
     .string {
         color: var(--string);
         text-wrap: nowrap;
-        max-width: 100%;
-        overflow: hidden;
-        text-overflow: ellipsis;
+
+        &.trim {
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
     }
 
     .number {
@@ -320,8 +325,9 @@
         color: var(--symbols);
     }
 
-    .property:has(> .scalar) {
+    .property:has(> :where(.string, .number, .boolean, .null)) {
         display: flex;
+        width: 100cqw;
     }
 
     .key {
