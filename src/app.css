@@ -18,7 +18,7 @@
     --font-sans: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif;
     --font-mono: Dank Mono, Operator Mono, Inconsolata, Fira Mono, ui-monospace, SF Mono, Monaco, Droid Sans Mono, Source Code Pro, monospace;
 
-    font-family: var(--font-sans);
+    font-family: var(--font-sans), sans-serif;
     font-weight: 400;
 
     color: var(--text);
@@ -38,6 +38,7 @@
 
 body {
     padding: var(--gap);
+    width: 100vw;
     height: 100vh;
     display: flex;
 }
@@ -60,7 +61,7 @@ button {
 }
 
 code, .code {
-    font-family: var(--font-mono);
+    font-family: var(--font-mono), monospace;
     font-size: 1.2rem;
     letter-spacing: 0;
 }
@@ -75,7 +76,7 @@ code, .code {
     border-radius: var(--radius);
     border: 1px solid rgb(from var(--light) r g b / .8);
     box-shadow: 0 0 16px 0 rgb(from var(--light) r g b / .6);
-    backdrop-filter: blur(4.5px);
+    backdrop-filter: blur(5px);
     opacity: 0; /* Final state of the exit animation */
     transition: opacity .25s;
 }
@@ -96,9 +97,7 @@ code, .code {
     flex: 1;
     display: flex;
     gap: var(--gap-small);
+    width: 100%;
     height: 100%;
-}
-
-.flexible {
-    flex: 1;
+    overflow: hidden;
 }
