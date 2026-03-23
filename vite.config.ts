@@ -15,6 +15,8 @@ export default defineConfig({
 		svelte(),
 		VitePWA({
 			registerType: 'autoUpdate',
+			injectRegister: 'auto',
+			base: './',
 			includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'icon.svg', 'images/*.png'], 
 			manifest: {
 				name: 'JSON Formatter',
