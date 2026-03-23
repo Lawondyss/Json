@@ -41,8 +41,8 @@ Projekt využívá `yarn` jako správce balíčků.
 
 Projekt je nastaven pro automatické nasazení na **GitHub Pages** pomocí GitHub Actions.
 
+- Aplikace je dostupná na adrese: [https://lawondyss.github.io/Json/](https://lawondyss.github.io/Json/)
 - Jakýkoliv push do větve `main` spustí workflow `.github/workflows/deploy.yml`.
-- Aplikace bude dostupná na adrese vašeho GitHub profilu (např. `https://lawondyss.github.io/Json/`).
 
 ## 💻 Použití
 
